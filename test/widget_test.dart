@@ -17,7 +17,7 @@ void main() {
     appLocale.value = const Locale('en');
     await tester.pumpWidget(const NutritionApp());
 
-    expect(find.text('Good morning, Alex 👋'), findsOneWidget);
+    expect(find.text('Good morning, Mahmoud 👋'), findsOneWidget);
     expect(find.text("Today's Progress"), findsOneWidget);
     expect(find.text('Daily Insight'), findsOneWidget);
     expect(find.text('Search for food'), findsNothing);
@@ -72,7 +72,7 @@ void main() {
     appLocale.value = const Locale('ar');
     await tester.pump();
     expect(appState.locale.languageCode, 'ar');
-    expect(find.text('صباح الخير، أليكس 👋'), findsOneWidget);
+    expect(find.text('صباح الخير، محمود 👋'), findsOneWidget);
     appLocale.value = const Locale('en');
     appState.locale = const Locale('en');
   });

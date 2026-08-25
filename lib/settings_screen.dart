@@ -6,6 +6,7 @@ import 'app_state.dart';
 import 'log_screen.dart';
 import 'plan_screen.dart';
 import 'progress_screen.dart';
+import 'reusable_widgets.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -201,8 +202,15 @@ class SettingsScreen extends StatelessWidget {
               color: Color(0xFFE8EEFA),
               shape: BoxShape.circle,
             ),
-            child: const Center(
-              child: Text('👨🏻', style: TextStyle(fontSize: 38)),
+            child: ClipOval(
+              child: AppNetworkImage(
+                url:
+                    'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=240&q=80',
+                fallback: Icons.person_rounded,
+                width: 70,
+                height: 70,
+                radius: 0,
+              ),
             ),
           ),
           const SizedBox(width: 14),
@@ -212,7 +220,7 @@ class SettingsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  translateText(context, 'Alex Johnson'),
+                  translateText(context, 'Mahmoud'),
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
@@ -445,7 +453,12 @@ class _SettingRow extends StatelessWidget {
                   const SizedBox(height: 3),
                   Text(
                     item.title == 'Language'
-                        ? translateText(context, 'English')
+                        ? translateText(
+                            context,
+                            appState.locale.languageCode == 'ar'
+                                ? 'Arabic'
+                                : 'English',
+                          )
                         : translateText(context, item.subtitle),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -480,16 +493,57 @@ class _SettingRow extends StatelessWidget {
 
   Future<void> _handleTap(BuildContext context) async {
     if (item.title == 'Language') {
-      final next = appState.locale.languageCode == 'ar'
-          ? const Locale('en')
-          : const Locale('ar');
-      await appState.setLocale(next);
-      appLocale.value = next;
+      final selectedLanguage = await showDialog<Locale>(
+        context: context,
+        builder: (dialogContext) {
+          final currentLocale = appState.locale;
+          return AlertDialog(
+            title: Text(translateText(dialogContext, 'Language')),
+            contentPadding: const EdgeInsets.symmetric(vertical: 8),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                _languageOption(
+                  dialogContext,
+                  const Locale('en'),
+                  'English',
+                  currentLocale,
+                ),
+                _languageOption(
+                  dialogContext,
+                  const Locale('ar'),
+                  'Arabic',
+                  currentLocale,
+                ),
+              ],
+            ),
+          );
+        },
+      );
+      if (selectedLanguage == null || !context.mounted) return;
+      await appState.setLocale(selectedLanguage);
+      appLocale.value = selectedLanguage;
       return;
     }
     if (!context.mounted) return;
     ScaffoldMessenger.of(
       context,
     ).showSnackBar(SnackBar(content: Text('${item.title}: coming soon')));
+  }
+
+  Widget _languageOption(
+    BuildContext context,
+    Locale locale,
+    String label,
+    Locale currentLocale,
+  ) {
+    final selected = currentLocale.languageCode == locale.languageCode;
+    return ListTile(
+      title: Text(translateText(context, label)),
+      trailing: selected
+          ? const Icon(Icons.check_rounded, color: SettingsScreen.primary)
+          : null,
+      onTap: () => Navigator.of(context).pop(locale),
+    );
   }
 }

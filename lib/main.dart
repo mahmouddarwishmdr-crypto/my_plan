@@ -215,8 +215,15 @@ class HeaderSection extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Center(
-              child: Text('👨🏻', style: TextStyle(fontSize: 29)),
+            child: ClipOval(
+              child: AppNetworkImage(
+                url:
+                    'https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?auto=format&fit=crop&w=240&q=80',
+                fallback: Icons.person_rounded,
+                width: 52,
+                height: 52,
+                radius: 0,
+              ),
             ),
           ),
           const SizedBox(width: 11),
@@ -228,8 +235,8 @@ class HeaderSection extends StatelessWidget {
                 Text(
                   appText(
                     context,
-                    'Good morning, Alex 👋',
-                    'صباح الخير، أليكس 👋',
+                    'Good morning, Mahmoud 👋',
+                    'صباح الخير، محمود 👋',
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -372,9 +379,9 @@ class TodayProgressCard extends StatelessWidget {
                   Text(
                     translateText(context, 'View all nutrients'),
                     style: TextStyle(
-                        color: Color(0xFF343A4E),
-                        fontSize: 13,
-                        fontWeight: FontWeight.w700,
+                      color: Color(0xFF343A4E),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                   SizedBox(width: 5),
@@ -400,116 +407,128 @@ class _CalorieSummary extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final circleSize = compact ? 132.0 : 210.0;
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final defaultSize = compact ? 132.0 : 210.0;
+        final circleSize = constraints.maxWidth.isFinite
+            ? constraints.maxWidth.clamp(100.0, defaultSize).toDouble()
+            : defaultSize;
 
-    return Column(
-      children: [
-        SizedBox(
-          width: circleSize,
-          height: circleSize,
-          child: Stack(
-            alignment: Alignment.center,
-            children: [
-              SizedBox(
-                width: circleSize,
-                height: circleSize,
-                child: CircularProgressIndicator(
-                  value: .67,
-                  strokeWidth: compact ? 9 : 13,
-                  backgroundColor: AppColors.orangeTrack,
-                  valueColor: const AlwaysStoppedAnimation<Color>(
-                    AppColors.orange,
-                  ),
-                ),
-              ),
-              Column(
-                mainAxisSize: MainAxisSize.min,
+        return Column(
+          children: [
+            SizedBox(
+              width: circleSize,
+              height: circleSize,
+              child: Stack(
+                alignment: Alignment.center,
                 children: [
-                  Text('🔥', style: TextStyle(fontSize: 22)),
-                  SizedBox(height: 3),
-                  Text(
-                    '1,200',
-                    style: TextStyle(
-                      color: AppColors.text,
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                      height: 1.0,
+                  SizedBox(
+                    width: circleSize,
+                    height: circleSize,
+                    child: CircularProgressIndicator(
+                      value: .67,
+                      strokeWidth: compact ? 9 : 13,
+                      backgroundColor: AppColors.orangeTrack,
+                      valueColor: const AlwaysStoppedAnimation<Color>(
+                        AppColors.orange,
+                      ),
                     ),
                   ),
-                  SizedBox(height: 3),
-                  Text(
-                    'of 1,800 kcal',
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text('🔥', style: TextStyle(fontSize: 22)),
+                      SizedBox(height: 3),
+                      Text(
+                        '1,200',
+                        style: TextStyle(
+                          color: AppColors.text,
+                          fontSize: 24,
+                          fontWeight: FontWeight.w800,
+                          height: 1.0,
+                        ),
+                      ),
+                      SizedBox(height: 3),
+                      Text(
+                        translateText(context, 'of 1,800 kcal'),
+                        style: TextStyle(
+                          color: Color(0xFF8B93A5),
+                          fontSize: 10,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 7),
+            Text.rich(
+              TextSpan(
+                children: [
+                  TextSpan(
+                    text: '600',
                     style: TextStyle(
-                      color: Color(0xFF8B93A5),
-                      fontSize: 10,
-                      fontWeight: FontWeight.w600,
+                      color: Color(0xFF1EA55A),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  TextSpan(
+                    text: ' kcal',
+                    style: TextStyle(
+                      color: Color(0xFF31384D),
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
                 ],
               ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 7),
-        const Text.rich(
-          TextSpan(
-            children: [
-              TextSpan(
-                text: '600',
-                style: TextStyle(
-                  color: Color(0xFF1EA55A),
-                  fontSize: 20,
-                  fontWeight: FontWeight.w800,
-                ),
+            ),
+            const SizedBox(height: 1),
+            Text(
+              translateText(context, 'remaining'),
+              style: TextStyle(
+                color: Color(0xFF939AAC),
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
               ),
-              TextSpan(
-                text: ' kcal',
-                style: TextStyle(
-                  color: Color(0xFF31384D),
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
-                ),
+            ),
+            const SizedBox(height: 9),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
+              decoration: BoxDecoration(
+                color: const Color(0xFFEFF9F3),
+                borderRadius: BorderRadius.circular(18),
               ),
-            ],
-          ),
-        ),
-        const SizedBox(height: 1),
-        const Text(
-          'remaining',
-          style: TextStyle(
-            color: Color(0xFF939AAC),
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        const SizedBox(height: 9),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 6),
-          decoration: BoxDecoration(
-            color: const Color(0xFFEFF9F3),
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: const Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.check_circle_rounded,
-                size: 14,
-                color: Color(0xFF1F9D58),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.check_circle_rounded,
+                    size: 14,
+                    color: Color(0xFF1F9D58),
+                  ),
+                  SizedBox(width: 4),
+                  Flexible(
+                    child: Text(
+                      translateText(context, "You're on track! 🎯"),
+                      softWrap: true,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Color(0xFF209757),
+                        fontSize: 11,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(width: 4),
-              Text(
-                "You're on track! 🎯",
-                style: TextStyle(
-                  color: Color(0xFF209757),
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ],
+            ),
+          ],
+        );
+      },
     );
   }
 }
@@ -1005,8 +1024,8 @@ class WaterCard extends StatelessWidget {
                 ),
               ),
               icon: const Icon(Icons.local_drink_outlined, size: 17),
-              label: const Text(
-                'Log water',
+              label: Text(
+                translateText(context, 'Log water'),
                 style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
               ),
             ),
@@ -1120,7 +1139,12 @@ class NextMealCard extends StatelessWidget {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    '2:00 PM  •  620 kcal  •  52g protein',
+                    translateText(
+                      context,
+                      '2:00 PM  •  620 kcal  •  52g protein',
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                       color: AppColors.muted,
                       fontSize: 11,
@@ -1223,6 +1247,8 @@ class TodayPlanCard extends StatelessWidget {
           const MealRow(
             icon: Icons.egg_alt_outlined,
             iconBg: Color(0xFFF5F5F7),
+            imageUrl:
+                'https://images.unsplash.com/photo-1525351484163-7529414344d8?w=240&q=80',
             title: 'Breakfast',
             time: '08:00 AM',
             items: 'Egg 100g  •  Bread 60g',
@@ -1233,6 +1259,8 @@ class TodayPlanCard extends StatelessWidget {
           const MealRow(
             icon: Icons.restaurant_rounded,
             iconBg: Color(0xFFF5F5F7),
+            imageUrl:
+                'https://images.unsplash.com/photo-1532550907401-a500c9a57435?w=240&q=80',
             title: 'Lunch',
             time: '02:00 PM',
             items: 'Chicken 200g  •  Rice 150g  •  Salad 100g',
@@ -1243,6 +1271,8 @@ class TodayPlanCard extends StatelessWidget {
           const MealRow(
             icon: Icons.apple_rounded,
             iconBg: Color(0xFFF5F5F7),
+            imageUrl:
+                'https://images.unsplash.com/photo-1568702846914-96b305d2aaeb?w=240&q=80',
             title: 'Snack',
             time: '05:30 PM',
             items: 'Apple 150g  •  Almonds 20g',
@@ -1253,6 +1283,8 @@ class TodayPlanCard extends StatelessWidget {
           const MealRow(
             icon: Icons.eco_outlined,
             iconBg: Color(0xFFF5F5F7),
+            imageUrl:
+                'https://images.unsplash.com/photo-1547592180-85f173990554?w=240&q=80',
             title: 'Dinner',
             time: '08:30 PM',
             items: 'Tuna 120g  •  Bread 80g',
@@ -1270,6 +1302,7 @@ enum MealStatus { logged, planned, skipped }
 class MealRow extends StatelessWidget {
   final IconData icon;
   final Color iconBg;
+  final String imageUrl;
   final String title;
   final String time;
   final String items;
@@ -1280,6 +1313,7 @@ class MealRow extends StatelessWidget {
     super.key,
     required this.icon,
     required this.iconBg,
+    required this.imageUrl,
     required this.title,
     required this.time,
     required this.items,
@@ -1317,14 +1351,12 @@ class MealRow extends StatelessWidget {
       height: 77,
       child: Row(
         children: [
-          Container(
+          AppNetworkImage(
+            url: imageUrl,
+            fallback: icon,
             width: 51,
             height: 51,
-            decoration: BoxDecoration(
-              color: iconBg,
-              borderRadius: BorderRadius.circular(14),
-            ),
-            child: Icon(icon, color: const Color(0xFF616A7F), size: 25),
+            radius: 14,
           ),
           const SizedBox(width: 9),
           Container(
@@ -1344,7 +1376,7 @@ class MealRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    translateText(context, title),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -1403,7 +1435,7 @@ class MealRow extends StatelessWidget {
                 Align(
                   alignment: Alignment.centerRight,
                   child: SmallStatus(
-                    text: config.statusText,
+                    text: translateText(context, config.statusText),
                     background: config.statusBg,
                     foreground: config.statusColor,
                   ),
