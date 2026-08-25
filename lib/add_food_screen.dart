@@ -261,7 +261,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                     Icon(action.$1, color: action.$3, size: 27),
                     const SizedBox(height: 8),
                     Text(
-                      action.$2,
+                      translateText(context, action.$2),
                       style: const TextStyle(
                         color: navy,
                         fontSize: 10.5,
@@ -663,7 +663,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              title,
+              translateText(context, title),
               style: const TextStyle(
                 color: navy,
                 fontSize: 10,

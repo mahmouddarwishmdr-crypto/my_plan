@@ -392,11 +392,11 @@ class _PlanScreenState extends State<PlanScreen> {
             Icon(icon, size: 19, color: selected ? purple : secondary),
             const SizedBox(width: 6),
             Text(
-              label,
+              translateText(context, label),
               style: TextStyle(
-                  fontSize: 14,
-                  color: selected ? purple : secondary,
-                  fontWeight: FontWeight.w600,
+                fontSize: 14,
+                color: selected ? purple : secondary,
+                fontWeight: FontWeight.w600,
               ),
             ),
           ],
@@ -696,7 +696,7 @@ class _PlanScreenState extends State<PlanScreen> {
             const SizedBox(width: 4),
             Expanded(
               child: Text(
-                title,
+                translateText(context, title),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
@@ -743,13 +743,13 @@ class _PlanScreenState extends State<PlanScreen> {
         borderRadius: BorderRadius.circular(11),
       ),
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: const Row(
+      child: Row(
         children: [
           Text('💡', style: TextStyle(fontSize: 20)),
           SizedBox(width: 8),
           Expanded(
             child: Text(
-              'Try adding a high-protein snack.',
+              translateText(context, 'Try adding a high-protein snack.'),
               style: TextStyle(
                 fontSize: 11,
                 color: Color(0xFF4B4A86),

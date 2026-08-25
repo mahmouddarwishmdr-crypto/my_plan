@@ -29,6 +29,7 @@ const Map<String, String> _arabicTranslations = {
   'Track what you eat': 'تابع ما تأكله',
   'Search for a food, brand or meal': 'ابحث عن طعام أو علامة أو وجبة',
   'Logged Today': 'المسجل اليوم',
+  'items': 'عناصر',
   'Suggestions for you': 'اقتراحات لك',
   'Add More Food': 'إضافة المزيد من الطعام',
   'Track your journey. See how far you have come.':
@@ -123,6 +124,7 @@ const Map<String, String> _arabicTranslations = {
   '4 meals  •  1 snack': '4 وجبات • وجبة خفيفة',
   'Add Meal / Snack': 'إضافة وجبة / وجبة خفيفة',
   'Nutrition Summary': 'ملخص التغذية',
+  'Try adding a high-protein snack.': 'جرّب إضافة وجبة خفيفة غنية بالبروتين.',
   'Target': 'الهدف',
   'Total Consumed': 'الإجمالي المستهلك',
   'Daily Average': 'المتوسط اليومي',
@@ -157,6 +159,11 @@ const Map<String, String> _arabicTranslations = {
   'Chicken Breast (Grilled)': 'صدر دجاج (مشوي)',
   'Brown Rice (Cooked)': 'أرز بني (مطبوخ)',
   'Greek Yogurt 0%': 'زبادي يوناني 0%',
+  'Greek Yogurt': 'زبادي يوناني',
+  '1 medium': '1 متوسطة',
+  'Greek yogurt': 'زبادي يوناني',
+  'Brown rice': 'أرز بني',
+  'Chicken breast': 'صدر دجاج',
   'Banana': 'موز',
   'Almonds': 'لوز',
   'Grilled Chicken': 'دجاج مشوي',
@@ -207,6 +214,14 @@ const Map<String, String> _arabicTranslations = {
   '52g protein': '52 جرام بروتين',
   '5g protein': '5 جرام بروتين',
   '40g protein': '40 جرام بروتين',
+    '52g protein  |  6g fat  |  0g carbs':
+      '52 جرام بروتين | 6 جرام دهون | 0 جرام كربوهيدرات',
+    '4g protein  |  0.4g fat  |  42g carbs':
+      '4 جرام بروتين | 0.4 جرام دهون | 42 جرام كربوهيدرات',
+    '2g protein  |  4g fat  |  6g carbs':
+      '2 جرام بروتين | 4 جرام دهون | 6 جرام كربوهيدرات',
+    '0g protein  |  10g fat  |  0g carbs':
+      '0 جرام بروتين | 10 جرام دهون | 0 جرام كربوهيدرات',
   'Mon': 'الإثنين',
   'Tue': 'الثلاثاء',
   'Wed': 'الأربعاء',

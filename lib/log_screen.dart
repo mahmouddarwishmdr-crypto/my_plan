@@ -102,7 +102,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
                   animation: appState,
                   builder: (context, _) => _sectionHeader(
                     'Logged Today',
-                    '${appState.loggedFoods} items  |  1,610 kcal',
+                    '${appState.loggedFoods} ${translateText(context, 'items')}  |  1,610 Kcal',
                   ),
                 ),
                 const SizedBox(height: 10),
@@ -325,7 +325,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
           children: [
             Expanded(
               child: Text(
-                title,
+                translateText(context, title),
                 style: const TextStyle(
                   fontSize: 12,
                   color: dark,
@@ -361,7 +361,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
       children: [
         Expanded(
           child: Text(
-            title,
+            translateText(context, title),
             style: const TextStyle(
               color: dark,
               fontSize: 17,
@@ -435,7 +435,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
                 ),
                 const SizedBox(height: 4),
                 Text(
-                  food.details,
+                  translateText(context, food.details),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(color: secondary, fontSize: 9),
