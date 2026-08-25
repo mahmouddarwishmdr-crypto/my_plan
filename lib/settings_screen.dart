@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'add_food_screen.dart';
 import 'app_bottom_nav.dart';
+import 'app_localization.dart';
+import 'app_state.dart';
 import 'log_screen.dart';
 import 'plan_screen.dart';
 import 'progress_screen.dart';
@@ -24,11 +26,11 @@ class SettingsScreen extends StatelessWidget {
           children: [
             _header(context),
             const SizedBox(height: 24),
-            _profileCard(),
+            _profileCard(context),
             const SizedBox(height: 18),
-            _premiumCard(),
+            _premiumCard(context),
             const SizedBox(height: 24),
-            _settingsSection('Goals & Profile', [
+            _settingsSection(context, 'Goals & Profile', [
               const _SettingData(
                 Icons.my_location_rounded,
                 'Goals',
@@ -51,7 +53,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ]),
             const SizedBox(height: 24),
-            _settingsSection('Preferences', [
+            _settingsSection(context, 'Preferences', [
               const _SettingData(
                 Icons.notifications_none_rounded,
                 'Notifications',
@@ -71,7 +73,7 @@ class SettingsScreen extends StatelessWidget {
               const _SettingData(Icons.language_rounded, 'Language', 'English'),
             ]),
             const SizedBox(height: 24),
-            _settingsSection('Account & Data', [
+            _settingsSection(context, 'Account & Data', [
               const _SettingData(
                 Icons.shield_outlined,
                 'Privacy',
@@ -90,7 +92,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ]),
             const SizedBox(height: 24),
-            _settingsSection('Support', [
+            _settingsSection(context, 'Support', [
               const _SettingData(
                 Icons.help_outline_rounded,
                 'Help Center',
@@ -141,12 +143,12 @@ class SettingsScreen extends StatelessWidget {
           tooltip: 'Back',
         ),
         const SizedBox(width: 4),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Settings',
+                translateText(context, 'Settings'),
                 style: TextStyle(
                   fontSize: 27,
                   fontWeight: FontWeight.w700,
@@ -155,7 +157,7 @@ class SettingsScreen extends StatelessWidget {
               ),
               SizedBox(height: 7),
               Text(
-                'Manage your account and preferences.',
+                translateText(context, 'Manage your account and preferences.'),
                 style: TextStyle(fontSize: 14, color: secondaryText),
               ),
             ],
@@ -187,7 +189,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _profileCard() {
+  Widget _profileCard(BuildContext context) {
     return _card(
       height: 106,
       child: Row(
@@ -204,13 +206,13 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 14),
-          const Expanded(
+          Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Alex Johnson',
+                  translateText(context, 'Alex Johnson'),
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w600,
@@ -233,7 +235,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _premiumCard() {
+  Widget _premiumCard(BuildContext context) {
     return Container(
       height: 112,
       padding: const EdgeInsets.symmetric(horizontal: 14),
@@ -256,13 +258,13 @@ class SettingsScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 12),
-          const Expanded(
+          Expanded(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Go Premium',
+                  translateText(context, 'Go Premium'),
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -271,7 +273,10 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 SizedBox(height: 4),
                 Text(
-                  'Unlock all features and insights\nto reach your goals faster.',
+                  translateText(
+                    context,
+                    'Unlock all features and insights\nto reach your goals faster.',
+                  ),
                   style: TextStyle(
                     fontSize: 11.5,
                     height: 1.4,
@@ -283,8 +288,8 @@ class SettingsScreen extends StatelessWidget {
           ),
           TextButton(
             onPressed: () {},
-            child: const Text(
-              'View Plan',
+            child: Text(
+              translateText(context, 'View Plan'),
               style: TextStyle(color: primary, fontWeight: FontWeight.w700),
             ),
           ),
@@ -293,12 +298,16 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget _settingsSection(String title, List<_SettingData> items) {
+  Widget _settingsSection(
+    BuildContext context,
+    String title,
+    List<_SettingData> items,
+  ) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title,
+          translateText(context, title),
           style: const TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w700,
@@ -402,65 +411,85 @@ class _SettingRow extends StatelessWidget {
     final color = item.danger
         ? const Color(0xFFE11D48)
         : SettingsScreen.primary;
-    return SizedBox(
-      height: 72,
-      child: Row(
-        children: [
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: item.danger
-                  ? const Color(0xFFFFEFF3)
-                  : const Color(0xFFF1EEFF),
-              shape: BoxShape.circle,
+    return InkWell(
+      onTap: () => _handleTap(context),
+      child: SizedBox(
+        height: 72,
+        child: Row(
+          children: [
+            Container(
+              width: 42,
+              height: 42,
+              decoration: BoxDecoration(
+                color: item.danger
+                    ? const Color(0xFFFFEFF3)
+                    : const Color(0xFFF1EEFF),
+                shape: BoxShape.circle,
+              ),
+              child: Icon(item.icon, size: 22, color: color),
             ),
-            child: Icon(item.icon, size: 22, color: color),
-          ),
-          const SizedBox(width: 13),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  item.title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w600,
-                    color: color,
+            const SizedBox(width: 13),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    translateText(context, item.title),
+                    style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: color,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 3),
-                Text(
-                  item.subtitle,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 11.5,
-                    color: SettingsScreen.secondaryText,
+                  const SizedBox(height: 3),
+                  Text(
+                    item.title == 'Language'
+                        ? translateText(context, 'English')
+                        : translateText(context, item.subtitle),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(
+                      fontSize: 11.5,
+                      color: SettingsScreen.secondaryText,
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          if (item.trailing != null)
-            Text(
-              item.trailing!,
-              style: const TextStyle(
-                color: SettingsScreen.primary,
-                fontSize: 12,
-                fontWeight: FontWeight.w600,
+                ],
               ),
             ),
-          const SizedBox(width: 7),
-          const Icon(
-            Icons.chevron_right_rounded,
-            size: 23,
-            color: Color(0xFF354055),
-          ),
-        ],
+            if (item.trailing != null)
+              Text(
+                translateText(context, item.trailing!),
+                style: const TextStyle(
+                  color: SettingsScreen.primary,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            const SizedBox(width: 7),
+            const Icon(
+              Icons.chevron_right_rounded,
+              size: 23,
+              color: Color(0xFF354055),
+            ),
+          ],
+        ),
       ),
     );
+  }
+
+  Future<void> _handleTap(BuildContext context) async {
+    if (item.title == 'Language') {
+      final next = appState.locale.languageCode == 'ar'
+          ? const Locale('en')
+          : const Locale('ar');
+      await appState.setLocale(next);
+      appLocale.value = next;
+      return;
+    }
+    if (!context.mounted) return;
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text('${item.title}: coming soon')));
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'app_bottom_nav.dart';
+import 'app_localization.dart';
+import 'app_state.dart';
 import 'log_screen.dart';
 import 'plan_screen.dart';
 import 'progress_screen.dart';
@@ -157,12 +159,12 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
           onPressed: () => Navigator.maybePop(context),
           icon: const Icon(Icons.arrow_back_ios_new_rounded, color: navy),
         ),
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Add Food',
+                translateText(context, 'Add Food'),
                 style: TextStyle(
                   color: navy,
                   fontSize: 25,
@@ -171,7 +173,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               ),
               SizedBox(height: 5),
               Text(
-                'Search and add food to your log.',
+                translateText(context, 'Search and add food to your log.'),
                 style: TextStyle(color: muted, fontSize: 13),
               ),
             ],
@@ -180,8 +182,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
         TextButton.icon(
           onPressed: () {},
           icon: const Icon(Icons.barcode_reader, size: 20),
-          label: const Text(
-            'Scan',
+          label: Text(
+            translateText(context, 'Scan'),
             style: TextStyle(fontWeight: FontWeight.w700),
           ),
           style: TextButton.styleFrom(
@@ -209,9 +211,12 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
             child: TextField(
               controller: searchController,
               onChanged: (value) => setState(() => query = value),
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 border: InputBorder.none,
-                hintText: 'Search for a food, brand or meal',
+                hintText: translateText(
+                  context,
+                  'Search for a food, brand or meal',
+                ),
                 hintStyle: TextStyle(color: muted, fontSize: 13),
               ),
             ),
@@ -278,8 +283,8 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _sectionTitle(
-          'Recent Searches',
-          'Clear all',
+          translateText(context, 'Recent Searches'),
+          translateText(context, 'Clear all'),
           () => setState(() => recentSearches.clear()),
         ),
         const SizedBox(height: 12),
@@ -290,7 +295,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               return Padding(
                 padding: const EdgeInsets.only(right: 8),
                 child: InputChip(
-                  label: Text(item),
+                  label: Text(translateText(context, item)),
                   avatar: const Icon(
                     Icons.schedule_rounded,
                     size: 16,
@@ -317,7 +322,11 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _sectionTitle('Your Favorites', 'See all', () {}),
+        _sectionTitle(
+          translateText(context, 'Your Favorites'),
+          translateText(context, 'See all'),
+          () {},
+        ),
         const SizedBox(height: 12),
         SizedBox(
           height: 190,
@@ -371,7 +380,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  food.name,
+                  translateText(context, food.name),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -418,7 +427,9 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          query.isEmpty ? 'Search Results' : 'Results for "$query"',
+          query.isEmpty
+              ? translateText(context, 'Search Results')
+              : '${translateText(context, 'Search Results')}: "$query"',
           style: const TextStyle(
             color: navy,
             fontSize: 17,
@@ -468,7 +479,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    food.name,
+                    translateText(context, food.name),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -479,7 +490,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                   ),
                   const SizedBox(height: 5),
                   Text(
-                    '${food.brand}  •  ${food.amount}',
+                    '${translateText(context, food.brand)}  •  ${food.amount}',
                     style: const TextStyle(color: muted, fontSize: 10.5),
                   ),
                 ],
@@ -558,7 +569,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        selectedFood.name,
+                        translateText(context, selectedFood.name),
                         style: TextStyle(
                           color: navy,
                           fontSize: 14,
@@ -567,7 +578,7 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
                       ),
                       SizedBox(height: 4),
                       Text(
-                        '${selectedFood.brand}  •  ${selectedFood.amount}',
+                        '${translateText(context, selectedFood.brand)}  •  ${selectedFood.amount}',
                         style: TextStyle(color: muted, fontSize: 10.5),
                       ),
                     ],
@@ -611,10 +622,13 @@ class _AddFoodScreenState extends State<AddFoodScreen> {
               width: double.infinity,
               height: 52,
               child: FilledButton.icon(
-                onPressed: () => Navigator.pop(context),
+                onPressed: () async {
+                  await appState.addFood();
+                  if (mounted) Navigator.pop(context);
+                },
                 icon: const Icon(Icons.check_rounded),
-                label: const Text(
-                  'Add to Lunch',
+                label: Text(
+                  translateText(context, 'Add to Lunch'),
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
                 ),
                 style: FilledButton.styleFrom(

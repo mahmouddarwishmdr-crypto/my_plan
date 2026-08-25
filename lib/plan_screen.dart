@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'add_food_screen.dart';
 import 'app_bottom_nav.dart';
+import 'app_localization.dart';
 import 'log_screen.dart';
 import 'progress_screen.dart';
 import 'reusable_widgets.dart';
@@ -150,12 +151,12 @@ class _PlanScreenState extends State<PlanScreen> {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Plan',
+                translateText(context, 'Plan'),
                 style: TextStyle(
                   fontSize: 40,
                   fontWeight: FontWeight.w700,
@@ -164,7 +165,7 @@ class _PlanScreenState extends State<PlanScreen> {
               ),
               SizedBox(height: 4),
               Text(
-                'Plan your meals. Stay on track.',
+                translateText(context, 'Plan your meals. Stay on track.'),
                 style: TextStyle(fontSize: 16, color: secondary),
               ),
             ],
@@ -173,7 +174,7 @@ class _PlanScreenState extends State<PlanScreen> {
         IconButton(
           onPressed: () {},
           icon: const Icon(Icons.more_horiz_rounded, size: 28, color: text),
-          tooltip: 'More options',
+          tooltip: translateText(context, 'More options'),
         ),
       ],
     );
@@ -212,7 +213,7 @@ class _PlanScreenState extends State<PlanScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        days[i][0],
+                        translateText(context, days[i][0]),
                         style: TextStyle(
                           color: i == selectedDay ? Colors.white70 : secondary,
                           fontSize: 11,
@@ -246,9 +247,9 @@ class _PlanScreenState extends State<PlanScreen> {
         children: [
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Daily Targets',
+                  translateText(context, 'Daily Targets'),
                   style: TextStyle(
                     fontSize: 17,
                     fontWeight: FontWeight.w700,
@@ -258,7 +259,10 @@ class _PlanScreenState extends State<PlanScreen> {
               ),
               TextButton(
                 onPressed: () {},
-                child: const Text('Edit', style: TextStyle(color: purple)),
+                child: Text(
+                  translateText(context, 'Edit'),
+                  style: const TextStyle(color: purple),
+                ),
               ),
             ],
           ),
@@ -318,7 +322,7 @@ class _PlanScreenState extends State<PlanScreen> {
           ),
           const SizedBox(height: 5),
           Text(
-            label,
+            translateText(context, label),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             style: const TextStyle(
@@ -390,9 +394,9 @@ class _PlanScreenState extends State<PlanScreen> {
             Text(
               label,
               style: TextStyle(
-                fontSize: 14,
-                color: selected ? purple : secondary,
-                fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  color: selected ? purple : secondary,
+                  fontWeight: FontWeight.w600,
               ),
             ),
           ],
@@ -401,11 +405,11 @@ class _PlanScreenState extends State<PlanScreen> {
     );
   }
 
-  Widget _mealsHeader() => const Row(
+  Widget _mealsHeader() => Row(
     children: [
       Expanded(
         child: Text(
-          'Meals',
+          translateText(context, 'Meals'),
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.w700,
@@ -414,7 +418,7 @@ class _PlanScreenState extends State<PlanScreen> {
         ),
       ),
       Text(
-        '4 meals  •  1 snack',
+        translateText(context, '4 meals  •  1 snack'),
         style: TextStyle(fontSize: 12, color: secondary),
       ),
     ],
@@ -495,7 +499,7 @@ class _PlanScreenState extends State<PlanScreen> {
                           children: [
                             Expanded(
                               child: Text(
-                                title,
+                                translateText(context, title),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
                                 style: const TextStyle(
@@ -510,7 +514,9 @@ class _PlanScreenState extends State<PlanScreen> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          details.join('  •  '),
+                          details
+                              .map((detail) => translateText(context, detail))
+                              .join('  •  '),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -520,7 +526,7 @@ class _PlanScreenState extends State<PlanScreen> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          '$kcal  •  $protein',
+                          '${translateText(context, kcal)}  •  ${translateText(context, protein)}',
                           style: const TextStyle(
                             fontSize: 10.5,
                             color: Color(0xFF43506E),
@@ -548,7 +554,7 @@ class _PlanScreenState extends State<PlanScreen> {
       borderRadius: BorderRadius.circular(8),
     ),
     child: Text(
-      'Planned',
+      translateText(context, 'Planned'),
       style: TextStyle(fontSize: 8, color: color, fontWeight: FontWeight.w600),
     ),
   );
@@ -561,7 +567,7 @@ class _PlanScreenState extends State<PlanScreen> {
         dash: 7,
         gap: 5,
       ),
-      child: const SizedBox(
+      child: SizedBox(
         height: 52,
         child: Center(
           child: Row(
@@ -574,7 +580,7 @@ class _PlanScreenState extends State<PlanScreen> {
               ),
               SizedBox(width: 8),
               Text(
-                'Add Meal / Snack',
+                translateText(context, 'Add Meal / Snack'),
                 style: TextStyle(
                   fontSize: 15,
                   color: purple,
@@ -595,9 +601,9 @@ class _PlanScreenState extends State<PlanScreen> {
         children: [
           Row(
             children: [
-              const Expanded(
+              Expanded(
                 child: Text(
-                  'Nutrition Summary',
+                  translateText(context, 'Nutrition Summary'),
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
@@ -605,9 +611,12 @@ class _PlanScreenState extends State<PlanScreen> {
                   ),
                 ),
               ),
-              _legend(purple, 'Planned'),
+              _legend(purple, translateText(context, 'Planned')),
               const SizedBox(width: 8),
-              _legend(const Color(0xFF9AA2B5), 'Target'),
+              _legend(
+                const Color(0xFF9AA2B5),
+                translateText(context, 'Target'),
+              ),
               const Icon(Icons.chevron_right, color: secondary, size: 20),
             ],
           ),
@@ -664,7 +673,10 @@ class _PlanScreenState extends State<PlanScreen> {
     children: [
       Container(width: 14, height: 4, color: color),
       const SizedBox(width: 4),
-      Text(label, style: const TextStyle(fontSize: 9, color: secondary)),
+      Text(
+        translateText(context, label),
+        style: const TextStyle(fontSize: 9, color: secondary),
+      ),
     ],
   );
 

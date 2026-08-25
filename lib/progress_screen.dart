@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'add_food_screen.dart';
 import 'app_bottom_nav.dart';
+import 'app_localization.dart';
 import 'log_screen.dart';
 import 'plan_screen.dart';
 
@@ -31,8 +32,8 @@ class _ProgressScreenState extends State<ProgressScreen> {
       appBar: AppBar(
         backgroundColor: const Color(0xFFFBFBFD),
         elevation: 0,
-        title: const Text(
-          'Progress',
+        title: Text(
+          translateText(context, 'Progress'),
           style: TextStyle(
             color: dark,
             fontSize: 24,
@@ -43,12 +44,12 @@ class _ProgressScreenState extends State<ProgressScreen> {
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.calendar_month_outlined, color: dark),
-            tooltip: 'Calendar',
+            tooltip: translateText(context, 'Calendar'),
           ),
           IconButton(
             onPressed: () {},
             icon: const Icon(Icons.tune_rounded, color: primary),
-            tooltip: 'Filters',
+            tooltip: translateText(context, 'Filters'),
           ),
         ],
       ),
@@ -56,8 +57,11 @@ class _ProgressScreenState extends State<ProgressScreen> {
         physics: const BouncingScrollPhysics(),
         padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
         children: [
-          const Text(
-            'Track your journey. See how far you have come.',
+          Text(
+            translateText(
+              context,
+              'Track your journey. See how far you have come.',
+            ),
             style: TextStyle(color: muted, fontSize: 13),
           ),
           const SizedBox(height: 18),
@@ -129,7 +133,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                 onTap: () => setState(() => selectedTab = i),
                 child: Center(
                   child: Text(
-                    labels[i],
+                    translateText(context, labels[i]),
                     style: TextStyle(
                       color: selectedTab == i ? primary : muted,
                       fontSize: 11,
@@ -169,7 +173,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
                     ),
                   ),
                   child: Text(
-                    ranges[i],
+                    translateText(context, ranges[i]),
                     style: TextStyle(
                       color: selectedRange == i ? primary : muted,
                       fontSize: 10,
@@ -328,7 +332,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
   Widget _caloriesCard() {
     return _card(
-      title: 'Calories',
+      title: translateText(context, 'Calories'),
       child: Column(
         children: [
           SizedBox(
@@ -394,7 +398,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
       children: [
         Expanded(
           child: _card(
-            title: 'Nutrition Distribution',
+            title: translateText(context, 'Nutrition Distribution'),
             child: SizedBox(
               height: 108,
               child: Row(
@@ -424,7 +428,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
         const SizedBox(width: 10),
         Expanded(
           child: _card(
-            title: 'Macronutrients',
+            title: translateText(context, 'Macronutrients'),
             child: SizedBox(
               height: 108,
               child: CustomPaint(painter: _BarChartPainter()),
@@ -437,7 +441,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
   Widget _weightCard() {
     return _card(
-      title: 'Weight  |  Last 30 days',
+      title: translateText(context, 'Weight  |  Last 30 days'),
       child: SizedBox(
         height: 105,
         child: Row(
@@ -480,7 +484,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
 
   Widget _insightsCard() {
     return _card(
-      title: 'Insights',
+      title: translateText(context, 'Insights'),
       child: const Row(
         children: [
           Expanded(
@@ -522,7 +526,7 @@ class _ProgressScreenState extends State<ProgressScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          title,
+          translateText(context, title),
           style: const TextStyle(
             fontSize: 11,
             color: dark,
@@ -543,7 +547,10 @@ class _ProgressScreenState extends State<ProgressScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(label, style: const TextStyle(fontSize: 7, color: muted)),
+          Text(
+            translateText(context, label),
+            style: const TextStyle(fontSize: 7, color: muted),
+          ),
           Text(
             value,
             style: TextStyle(
@@ -576,7 +583,7 @@ class _Bullet extends StatelessWidget {
       const SizedBox(width: 4),
       Expanded(
         child: Text(
-          title,
+          translateText(context, title),
           style: const TextStyle(
             fontSize: 8,
             color: _ProgressScreenState.muted,
@@ -602,7 +609,7 @@ class _Insight extends StatelessWidget {
       Icon(icon, color: color, size: 20),
       const SizedBox(height: 5),
       Text(
-        text,
+        translateText(context, text),
         textAlign: TextAlign.center,
         style: const TextStyle(fontSize: 8, color: _ProgressScreenState.dark),
       ),

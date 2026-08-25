@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'app_localization.dart';
 
 class AppCard extends StatelessWidget {
   final Widget child;
@@ -103,7 +104,7 @@ class AppSectionHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final actionText = Text(
-      action,
+      translateText(context, action),
       style: const TextStyle(
         color: Color(0xFF5B35F5),
         fontSize: 12,
@@ -115,7 +116,7 @@ class AppSectionHeader extends StatelessWidget {
       children: [
         Expanded(
           child: Text(
-            title,
+            translateText(context, title),
             style: const TextStyle(
               color: Color(0xFF17203A),
               fontSize: 17,

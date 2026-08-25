@@ -3,6 +3,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'add_food_screen.dart';
 import 'app_bottom_nav.dart';
+import 'app_localization.dart';
 import 'log_screen.dart';
 import 'plan_screen.dart';
 import 'progress_screen.dart';
@@ -114,13 +115,13 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
               children: [
                 _pill(
                   Icons.wb_sunny_outlined,
-                  'Lunch  •  02:00 PM',
+                  translateText(context, 'Lunch  •  02:00 PM'),
                   const Color(0xFFF0EBFF),
                   purple,
                 ),
                 const SizedBox(height: 18),
-                const Text(
-                  'Grilled Chicken\nwith Rice & Salad',
+                Text(
+                  translateText(context, 'Grilled Chicken\nwith Rice & Salad'),
                   style: TextStyle(
                     color: navy,
                     fontSize: 25,
@@ -131,7 +132,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                 const SizedBox(height: 18),
                 _pill(
                   Icons.check_circle_outline_rounded,
-                  'Logged',
+                  translateText(context, 'Logged'),
                   const Color(0xFFEAF9EF),
                   const Color(0xFF24A45A),
                 ),
@@ -201,7 +202,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
         if (icon != null) Icon(icon, color: color, size: 22),
         if (icon != null) const SizedBox(height: 5),
         Text(
-          label,
+          translateText(context, label),
           style: const TextStyle(
             color: muted,
             fontSize: 12,
@@ -239,8 +240,8 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
         children: [
           Row(
             children: [
-              const Text(
-                'Portion Size',
+              Text(
+                translateText(context, 'Portion Size'),
                 style: TextStyle(
                   color: navy,
                   fontSize: 17,
@@ -278,8 +279,8 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                       fontWeight: FontWeight.w800,
                     ),
                   ),
-                  const Text(
-                    'grams',
+                  Text(
+                    translateText(context, 'grams'),
                     style: TextStyle(color: muted, fontSize: 12),
                   ),
                 ],
@@ -305,8 +306,8 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                     ),
                   ),
                   const SizedBox(height: 3),
-                  const Text(
-                    '1 serving = 300 g',
+                  Text(
+                    translateText(context, '1 serving = 300 g'),
                     style: TextStyle(color: muted, fontSize: 11),
                   ),
                 ],
@@ -349,7 +350,10 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _sectionTitle('Ingredients', '4 items'),
+          _sectionTitle(
+            translateText(context, 'Ingredients'),
+            translateText(context, '4 items'),
+          ),
           const SizedBox(height: 8),
           ...items.map(
             (item) => Padding(
@@ -369,7 +373,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          item.$1,
+                          translateText(context, item.$1),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(
@@ -380,14 +384,14 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          item.$2,
+                          translateText(context, item.$2),
                           style: const TextStyle(color: muted, fontSize: 11),
                         ),
                       ],
                     ),
                   ),
                   Text(
-                    item.$3,
+                    translateText(context, item.$3),
                     style: const TextStyle(
                       color: navy,
                       fontSize: 12,
@@ -419,7 +423,10 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          _sectionTitle('Nutrition Details', '% Daily Value*'),
+          _sectionTitle(
+            translateText(context, 'Nutrition Details'),
+            translateText(context, '% Daily Value*'),
+          ),
           const SizedBox(height: 10),
           ...values.map(
             (item) => Padding(
@@ -428,7 +435,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                 children: [
                   Expanded(
                     child: Text(
-                      item.$1,
+                      translateText(context, item.$1),
                       style: const TextStyle(color: navy, fontSize: 12),
                     ),
                   ),
@@ -450,8 +457,11 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
             ),
           ),
           const Divider(color: line),
-          const Text(
-            '* Percent Daily Values are based on a 2,000 calorie diet.',
+          Text(
+            translateText(
+              context,
+              '* Percent Daily Values are based on a 2,000 calorie diet.',
+            ),
             style: TextStyle(color: muted, fontSize: 10.5),
           ),
         ],
@@ -464,8 +474,8 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'What would you like to do?',
+          Text(
+            translateText(context, 'What would you like to do?'),
             style: TextStyle(
               color: navy,
               fontSize: 17,
@@ -506,7 +516,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
                 Icon(icon, color: purple, size: 22),
                 const SizedBox(height: 7),
                 Text(
-                  label,
+                  translateText(context, label),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -535,7 +545,7 @@ class _MealDetailsScreenState extends State<MealDetailsScreen> {
       ),
       const Spacer(),
       Text(
-        trailing,
+        translateText(context, trailing),
         style: const TextStyle(
           color: purple,
           fontSize: 12,

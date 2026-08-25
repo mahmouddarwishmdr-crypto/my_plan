@@ -8,10 +8,13 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 
+import 'package:my_plan/app_localization.dart';
+import 'package:my_plan/app_state.dart';
 import 'package:my_plan/main.dart';
 
 void main() {
   testWidgets('displays the health dashboard', (WidgetTester tester) async {
+    appLocale.value = const Locale('en');
     await tester.pumpWidget(const NutritionApp());
 
     expect(find.text('Good morning, Alex 👋'), findsOneWidget);
@@ -51,5 +54,26 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text('Add Food'), findsOneWidget);
     expect(find.byKey(const ValueKey('app-nav-0')), findsOneWidget);
+  });
+
+  testWidgets('persists a food entry and toggles language', (
+    WidgetTester tester,
+  ) async {
+    final startingFoodCount = appState.loggedFoods;
+    await tester.pumpWidget(const NutritionApp());
+
+    await tester.tap(find.byKey(const ValueKey('app-nav-add')));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Add to Lunch'));
+    await tester.pumpAndSettle();
+    expect(appState.loggedFoods, startingFoodCount + 1);
+
+    await appState.setLocale(const Locale('ar'));
+    appLocale.value = const Locale('ar');
+    await tester.pump();
+    expect(appState.locale.languageCode, 'ar');
+    expect(find.text('صباح الخير، أليكس 👋'), findsOneWidget);
+    appLocale.value = const Locale('en');
+    appState.locale = const Locale('en');
   });
 }

@@ -3,6 +3,8 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'add_food_screen.dart';
 import 'app_bottom_nav.dart';
+import 'app_localization.dart';
+import 'app_state.dart';
 import 'plan_screen.dart';
 import 'progress_screen.dart';
 import 'reusable_widgets.dart';
@@ -96,7 +98,13 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
                 const SizedBox(height: 22),
                 _summaryCard(),
                 const SizedBox(height: 24),
-                _sectionHeader('Logged Today', '4 items  |  1,610 kcal'),
+                AnimatedBuilder(
+                  animation: appState,
+                  builder: (context, _) => _sectionHeader(
+                    'Logged Today',
+                    '${appState.loggedFoods} items  |  1,610 kcal',
+                  ),
+                ),
                 const SizedBox(height: 10),
                 _foodList(),
                 const SizedBox(height: 14),
@@ -147,12 +155,12 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
   Widget _header() {
     return Row(
       children: [
-        const Expanded(
+        Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Log Food',
+                translateText(context, 'Log Food'),
                 style: TextStyle(
                   fontSize: 32,
                   fontWeight: FontWeight.w800,
@@ -161,7 +169,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
               ),
               SizedBox(height: 3),
               Text(
-                'Track what you eat',
+                translateText(context, 'Track what you eat'),
                 style: TextStyle(fontSize: 16, color: secondary),
               ),
             ],
@@ -170,7 +178,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
         IconButton(
           onPressed: () {},
           icon: const Icon(Icons.history_rounded, size: 28, color: dark),
-          tooltip: 'History',
+          tooltip: translateText(context, 'History'),
         ),
       ],
     );
@@ -184,13 +192,13 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
         color: const Color(0xFFF1F2F6),
         borderRadius: BorderRadius.circular(16),
       ),
-      child: const Row(
+      child: Row(
         children: [
           Icon(Icons.search_rounded, size: 27, color: secondary),
           SizedBox(width: 10),
           Expanded(
             child: Text(
-              'Search for a food, brand or meal',
+              translateText(context, 'Search for a food, brand or meal'),
               style: TextStyle(color: secondary, fontSize: 14),
             ),
           ),
@@ -234,7 +242,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
           Icon(action.icon, color: action.color, size: 25),
           const SizedBox(height: 7),
           Text(
-            action.title,
+            translateText(context, action.title),
             textAlign: TextAlign.center,
             style: const TextStyle(
               color: dark,
@@ -362,7 +370,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
           ),
         ),
         Text(
-          trailing,
+          translateText(context, trailing),
           style: const TextStyle(
             color: secondary,
             fontSize: 11,
@@ -411,7 +419,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  food.name,
+                  translateText(context, food.name),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
@@ -422,7 +430,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
                 ),
                 const SizedBox(height: 3),
                 Text(
-                  food.amount,
+                  translateText(context, food.amount),
                   style: const TextStyle(color: secondary, fontSize: 11),
                 ),
                 const SizedBox(height: 4),
@@ -460,7 +468,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
     return OutlinedButton.icon(
       onPressed: _openAddFood,
       icon: const Icon(Icons.add_rounded, size: 20),
-      label: const Text('Add More Food'),
+      label: Text(translateText(context, 'Add More Food')),
       style: OutlinedButton.styleFrom(
         foregroundColor: purple,
         minimumSize: const Size(double.infinity, 50),
@@ -508,7 +516,7 @@ class _LogFoodScreenState extends State<LogFoodScreen> {
           Padding(
             padding: const EdgeInsets.fromLTRB(8, 7, 5, 0),
             child: Text(
-              item.name,
+              translateText(context, item.name),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(

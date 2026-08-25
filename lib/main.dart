@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'add_food_screen.dart';
 import 'app_localization.dart';
+import 'app_state.dart';
 import 'app_bottom_nav.dart';
 import 'log_screen.dart';
 import 'meal_details_screen.dart';
@@ -9,7 +10,10 @@ import 'progress_screen.dart';
 import 'reusable_widgets.dart';
 import 'settings_screen.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await appState.load();
+  appLocale.value = appState.locale;
   runApp(const NutritionApp());
 }
 
@@ -132,13 +136,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  double water = 1.4;
-  final double waterGoal = 2.5;
-
   void addWater(double amount) {
-    setState(() {
-      water = (water + amount).clamp(0, waterGoal);
-    });
+    appState.addWater(amount);
   }
 
   @override
@@ -161,10 +160,13 @@ class _HomeScreenState extends State<HomeScreen> {
                         const SizedBox(height: 14),
                         const TodayProgressCard(),
                         const SizedBox(height: 12),
-                        InsightWaterSection(
-                          water: water,
-                          waterGoal: waterGoal,
-                          onAddWater: addWater,
+                        AnimatedBuilder(
+                          animation: appState,
+                          builder: (context, _) => InsightWaterSection(
+                            water: appState.water,
+                            waterGoal: appState.waterGoal,
+                            onAddWater: addWater,
+                          ),
                         ),
                         const SizedBox(height: 12),
                         const NextMealCard(),
@@ -302,8 +304,8 @@ class TodayProgressCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text(
-                "Today's Progress",
+              Text(
+                translateText(context, "Today's Progress"),
                 style: TextStyle(
                   color: AppColors.text,
                   fontSize: 17,
@@ -313,10 +315,10 @@ class TodayProgressCard extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {},
-                child: const Row(
+                child: Row(
                   children: [
                     Text(
-                      'Details',
+                      translateText(context, 'Details'),
                       style: TextStyle(
                         color: AppColors.primary,
                         fontSize: 13,
@@ -364,15 +366,15 @@ class TodayProgressCard extends StatelessWidget {
             child: InkWell(
               borderRadius: BorderRadius.circular(12),
               onTap: () {},
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'View all nutrients',
+                    translateText(context, 'View all nutrients'),
                     style: TextStyle(
-                      color: Color(0xFF343A4E),
-                      fontSize: 13,
-                      fontWeight: FontWeight.w700,
+                        color: Color(0xFF343A4E),
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
                     ),
                   ),
                   SizedBox(width: 5),
@@ -422,7 +424,7 @@ class _CalorieSummary extends StatelessWidget {
               ),
               Column(
                 mainAxisSize: MainAxisSize.min,
-                children: const [
+                children: [
                   Text('🔥', style: TextStyle(fontSize: 22)),
                   SizedBox(height: 3),
                   Text(
@@ -517,11 +519,11 @@ class MacroProgressList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
       children: [
         MacroRow(
           icon: Icons.local_fire_department_rounded,
-          title: 'Calories',
+          title: translateText(context, 'Calories'),
           current: '1,200',
           goal: '1,800 kcal',
           percent: 67,
@@ -530,7 +532,7 @@ class MacroProgressList extends StatelessWidget {
         SizedBox(height: 12),
         MacroRow(
           icon: Icons.spa_rounded,
-          title: 'Protein',
+          title: translateText(context, 'Protein'),
           current: '85',
           goal: '130 g',
           percent: 65,
@@ -539,7 +541,7 @@ class MacroProgressList extends StatelessWidget {
         SizedBox(height: 12),
         MacroRow(
           icon: Icons.rice_bowl_rounded,
-          title: 'Carbohydrates',
+          title: translateText(context, 'Carbohydrates'),
           current: '120',
           goal: '180 g',
           percent: 67,
@@ -548,7 +550,7 @@ class MacroProgressList extends StatelessWidget {
         SizedBox(height: 12),
         MacroRow(
           icon: Icons.eco_rounded,
-          title: 'Fats',
+          title: translateText(context, 'Fats'),
           current: '40',
           goal: '60 g',
           percent: 67,
@@ -603,7 +605,7 @@ class MacroRow extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    title,
+                    translateText(context, title),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -726,9 +728,9 @@ class InsightCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 6),
-              const Flexible(
+              Flexible(
                 child: Text(
-                  'Daily Insight',
+                  translateText(context, 'Daily Insight'),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -747,11 +749,11 @@ class InsightCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 13),
-          const Text.rich(
+          Text.rich(
             TextSpan(
               children: [
                 TextSpan(
-                  text: 'You need ',
+                  text: translateText(context, 'You need '),
                   style: TextStyle(
                     color: AppColors.text,
                     fontSize: 12,
@@ -759,7 +761,7 @@ class InsightCard extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '~45g more protein',
+                  text: translateText(context, '~45g more protein'),
                   style: TextStyle(
                     color: AppColors.primary,
                     fontSize: 12,
@@ -768,7 +770,8 @@ class InsightCard extends StatelessWidget {
                   ),
                 ),
                 TextSpan(
-                  text: '\nto reach your daily goal.',
+                  text:
+                      '\n${translateText(context, 'to reach your daily goal.')}',
                   style: TextStyle(
                     color: AppColors.text,
                     fontSize: 12,
@@ -784,7 +787,7 @@ class InsightCard extends StatelessWidget {
             runSpacing: 6,
             children: [
               FoodMiniIcon(
-                icon: Icons.set_meal_rounded,
+                icon: Icons.restaurant_rounded,
                 color: Color(0xFFFFC979),
                 imageUrl:
                     'https://images.unsplash.com/photo-1547592180-85f173990554?w=160&q=80',
@@ -820,11 +823,11 @@ class InsightCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                 ),
               ),
-              child: const Row(
+              child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'See suggestions',
+                    translateText(context, 'See suggestions'),
                     style: TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
                   ),
                   SizedBox(width: 3),
@@ -904,8 +907,8 @@ class WaterCard extends StatelessWidget {
                 color: AppColors.water,
               ),
               const SizedBox(width: 9),
-              const Text(
-                'Water',
+              Text(
+                translateText(context, 'Water'),
                 style: TextStyle(
                   color: AppColors.text,
                   fontSize: 15,
@@ -1042,7 +1045,7 @@ class WaterActionButton extends StatelessWidget {
         child: FittedBox(
           fit: BoxFit.scaleDown,
           child: Text(
-            label,
+            translateText(context, label),
             style: const TextStyle(fontSize: 11, fontWeight: FontWeight.w700),
           ),
         ),
@@ -1097,9 +1100,9 @@ class NextMealCard extends StatelessWidget {
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
-                    'Next Meal',
+                    translateText(context, 'Next Meal'),
                     style: TextStyle(
                       color: Color(0xFF1FA05C),
                       fontSize: 13,
@@ -1108,7 +1111,7 @@ class NextMealCard extends StatelessWidget {
                   ),
                   SizedBox(height: 2),
                   Text(
-                    'Lunch',
+                    translateText(context, 'Lunch'),
                     style: TextStyle(
                       color: AppColors.text,
                       fontSize: 17,
@@ -1126,7 +1129,7 @@ class NextMealCard extends StatelessWidget {
                   ),
                   SizedBox(height: 5),
                   SmallStatus(
-                    text: 'Logged',
+                    text: translateText(context, 'Logged'),
                     background: Color(0xFFF0F1F4),
                     foreground: Color(0xFF646C80),
                   ),
@@ -1134,11 +1137,11 @@ class NextMealCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            const Column(
+            Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Text(
-                  'You have',
+                  translateText(context, 'You have'),
                   style: TextStyle(color: AppColors.muted, fontSize: 11),
                 ),
                 SizedBox(height: 1),
@@ -1151,7 +1154,7 @@ class NextMealCard extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'kcal remaining',
+                  translateText(context, 'kcal remaining'),
                   style: TextStyle(color: AppColors.muted, fontSize: 10),
                 ),
               ],
@@ -1184,8 +1187,8 @@ class TodayPlanCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              const Text(
-                "Today's Plan",
+              Text(
+                translateText(context, "Today's Plan"),
                 style: TextStyle(
                   color: AppColors.text,
                   fontSize: 17,
@@ -1195,7 +1198,7 @@ class TodayPlanCard extends StatelessWidget {
               const Spacer(),
               GestureDetector(
                 onTap: () {},
-                child: const Row(
+                child: Row(
                   children: [
                     Icon(
                       Icons.edit_rounded,
@@ -1204,7 +1207,7 @@ class TodayPlanCard extends StatelessWidget {
                     ),
                     SizedBox(width: 4),
                     Text(
-                      'Edit Plan',
+                      translateText(context, 'Edit Plan'),
                       style: TextStyle(
                         color: AppColors.primary,
                         fontSize: 12.5,
@@ -1352,7 +1355,10 @@ class MealRow extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    items,
+                    items
+                        .split('  •  ')
+                        .map((item) => translateText(context, item))
+                        .join('  •  '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
@@ -1363,7 +1369,10 @@ class MealRow extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    nutrition,
+                    nutrition
+                        .split('  •  ')
+                        .map((item) => translateText(context, item))
+                        .join('  •  '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
